@@ -1216,6 +1216,7 @@ function App() {
   const metrikaOpenedCourses = useRef<Record<string, boolean>>({})
   const metrikaFinishedCourses = useRef<Record<string, boolean>>({})
   const metrikaSiteVisitSent = useRef(false)
+  const metrikaQrVisitSent = useRef(false)
   const today = new Date()
   const isTargetMonth = today.getFullYear() === 2026 && today.getMonth() === 2
   const todayDay = isTargetMonth ? today.getDate() : 0
@@ -1294,9 +1295,15 @@ function App() {
     }
     return `${base}#/events/${activeEvent.id}`
   }, [activeEvent, route.view, route.subview, route.topicIndex, route.mode, route.stepIndex])
-  const qrImageUrl = stepUrl
+  const qrStepUrl = useMemo(() => {
+    if (!stepUrl) return ''
+    const [base, hash = ''] = stepUrl.split('#')
+    if (!hash) return `${base}?ref=qr`
+    return `${base}?ref=qr#${hash}`
+  }, [stepUrl])
+  const qrImageUrl = qrStepUrl
     ? `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(
-        stepUrl,
+        qrStepUrl,
       )}`
     : ''
 
@@ -1312,6 +1319,15 @@ function App() {
       metrikaSiteVisitSent.current = true
       reachGoal('site_visit')
     }
+  }, [])
+
+  useEffect(() => {
+    if (metrikaQrVisitSent.current) return
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    if (!params.has('ref') || params.get('ref') !== 'qr') return
+    metrikaQrVisitSent.current = true
+    reachGoal('qr_visit', { ref: 'qr', path: window.location.hash || '/' })
   }, [])
 
   useEffect(() => {
@@ -1973,7 +1989,7 @@ function App() {
                     <img src={qrImageUrl} alt="QR-код курса" />
                   ) : null}
                 </div>
-                <p className="qr-url">{stepUrl}</p>
+                <p className="qr-url">{qrStepUrl || stepUrl}</p>
               </div>
             </div>
           )}
