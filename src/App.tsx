@@ -1247,6 +1247,7 @@ function App() {
     () => (route.view === 'event' ? events.find((e) => e.id === route.id) : null),
     [route],
   )
+  const visibleEvents = useMemo(() => events.filter((event) => event.uid === 'C02'), [])
   const activeTopics = useMemo(() => {
     if (!activeEvent) return []
     const ids = activeEvent.topicIds ?? []
@@ -2070,7 +2071,7 @@ function App() {
               <p>Каждый курс открывается как полноценный блог.</p>
             </div>
             <div className="course-grid">
-              {events.map((event) => (
+              {visibleEvents.map((event) => (
                 <article className="course-card" key={event.id}>
                   <a className="course-link" href={`#/events/${event.id}`}>
                     {event.tag ? <span className="course-tag">{event.tag}</span> : null}
