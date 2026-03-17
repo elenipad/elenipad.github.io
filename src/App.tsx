@@ -21,6 +21,23 @@ type Route =
       stepIndex?: number
     }
 
+declare global {
+  interface Window {
+    ym?: (...args: unknown[]) => void
+  }
+}
+
+const METRIKA_ID = 107730080
+
+const reachGoal = (name: string, params?: Record<string, unknown>) => {
+  if (typeof window === 'undefined' || typeof window.ym !== 'function') return
+  try {
+    window.ym(METRIKA_ID, 'reachGoal', name, params)
+  } catch {
+    // ignore metric errors
+  }
+}
+
 type Example = {
   input: string
   output?: string
@@ -1196,6 +1213,9 @@ function App() {
   const [openPractice, setOpenPractice] = useState<Record<string, boolean>>({})
   const [isCompactTimeline, setIsCompactTimeline] = useState(false)
   const viewedCourses = useRef<Record<string, boolean>>({})
+  const metrikaOpenedCourses = useRef<Record<string, boolean>>({})
+  const metrikaFinishedCourses = useRef<Record<string, boolean>>({})
+  const metrikaSiteVisitSent = useRef(false)
   const today = new Date()
   const isTargetMonth = today.getFullYear() === 2026 && today.getMonth() === 2
   const todayDay = isTargetMonth ? today.getDate() : 0
@@ -1288,11 +1308,33 @@ function App() {
   }, [route.view, route.subview, activeEvent?.id])
 
   useEffect(() => {
+    if (!metrikaSiteVisitSent.current) {
+      metrikaSiteVisitSent.current = true
+      reachGoal('site_visit')
+    }
+  }, [])
+
+  useEffect(() => {
     if (route.view !== 'event' || !activeEvent?.uid) return
     if (viewedCourses.current[activeEvent.uid]) return
     viewedCourses.current[activeEvent.uid] = true
     incrementCourseView(activeEvent.uid).catch(() => {})
   }, [route.view, activeEvent?.uid])
+
+  useEffect(() => {
+    if (route.view !== 'event' || !activeEvent?.uid) return
+    if (metrikaOpenedCourses.current[activeEvent.uid]) return
+    metrikaOpenedCourses.current[activeEvent.uid] = true
+    reachGoal('course_open', { courseId: activeEvent.id, uid: activeEvent.uid })
+  }, [route.view, activeEvent?.id, activeEvent?.uid])
+
+  useEffect(() => {
+    if (route.view !== 'event' || route.subview !== 'complete') return
+    if (!activeEvent?.uid) return
+    if (metrikaFinishedCourses.current[activeEvent.uid]) return
+    metrikaFinishedCourses.current[activeEvent.uid] = true
+    reachGoal('course_finish', { courseId: activeEvent.id, uid: activeEvent.uid })
+  }, [route.view, route.subview, activeEvent?.id, activeEvent?.uid])
 
   // no auto-redirect: show topic intro first
 
