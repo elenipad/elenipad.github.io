@@ -2022,6 +2022,7 @@ function App() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label="MoonlumeVPN"
+                    onClick={() => reachGoal('project_click', { project: 'moonlumevpn' })}
                   >
                     <span className="project-logo logo-moonlume">
                       <img
