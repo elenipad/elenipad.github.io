@@ -1648,6 +1648,76 @@
   margin-bottom: 6px;
 }
 
+.course-complete-ad-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.course-complete-ad-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 248, 255, 0.7));
+  border: 1px solid rgba(18, 17, 15, 0.14);
+  box-shadow: 0 10px 22px rgba(18, 17, 15, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-complete-ad-left:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px rgba(18, 17, 15, 0.18);
+}
+
+.course-complete-ad-left:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(18, 17, 15, 0.14);
+}
+
+.course-complete-ad-link {
+  display: inline-flex;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  margin-top: 6px;
+}
+
+.course-complete-ad-left img {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.course-complete-ad-side {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.course-complete-ad-qr {
+  width: 104px;
+  height: 104px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #fff;
+}
+
+.course-complete-ad-qr-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
 .course-complete-grid {
   display: grid;
   gap: 16px;

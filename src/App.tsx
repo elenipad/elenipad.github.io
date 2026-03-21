@@ -750,6 +750,43 @@ function App() {
                   </ul>
                 </div>
               </div>
+              <div className="course-complete-card course-complete-ad-card">
+                <div className="course-complete-ad-main">
+                  <div className="course-complete-kicker">Поддержка</div>
+                  <h3>Поддержи проект</h3>
+                  <p>
+                    Поддержи проект, подключи сервис для обеспечения приватности в
+                    интернете.
+                  </p>
+                  <a
+                    className="course-complete-ad-left"
+                    href="https://moonlumevpn.ru"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="MoonlumeVPN"
+                  >
+                    <img src="/moonlumevpn.png" alt="MoonlumeVPN" loading="lazy" />
+                    <span>MoonlumeVPN</span>
+                  </a>
+                  <a
+                    className="course-complete-ad-link"
+                    href="https://moonlumevpn.ru"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    https://moonlumevpn.ru
+                  </a>
+                </div>
+                <div className="course-complete-ad-side">
+                  <img
+                    className="course-complete-ad-qr"
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=144x144&data=https%3A%2F%2Fmoonlumevpn.ru"
+                    alt="QR Moonlumevpn.ru"
+                    loading="lazy"
+                  />
+                  <div className="course-complete-ad-qr-label">Сканируй QR</div>
+                </div>
+              </div>
             </section>
           ) : null}
           {activeTopics.length > 0 ? (
