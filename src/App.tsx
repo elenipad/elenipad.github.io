@@ -245,6 +245,11 @@ function App() {
     () => (route.view === 'course' ? events.find((e) => e.id === route.id) : null),
     [route],
   )
+  const courseRoute = route.view === 'course' ? route : null
+  const courseSubview = courseRoute?.subview
+  const courseTopicIndex = courseRoute?.topicIndex
+  const courseMode = courseRoute?.mode
+  const courseStepIndex = courseRoute?.stepIndex
   const activeCourseHash = activeEvent ? `#/${courseSlug(activeEvent.id)}` : ''
   const isCourseView = route.view === 'course' && Boolean(activeEvent)
   const resolvedView = !activeEvent && route.view === 'course' ? 'home' : route.view
@@ -271,22 +276,29 @@ function App() {
     if (route.view !== 'course' || !activeEvent) return ''
     const base = `${window.location.origin}${window.location.pathname}`
     const courseBase = `#/${courseSlug(activeEvent.id)}`
-    if (route.subview === 'intro') {
+    if (courseSubview === 'intro') {
       return `${base}${courseBase}/intro`
     }
-    if (route.subview === 'topic') {
-      const index = route.topicIndex ?? 0
-      if (route.mode && route.mode !== 'choose') {
-        const stepIndex = route.stepIndex ?? 0
-        return `${base}${courseBase}/topic/${index}/${route.mode}/step/${stepIndex}`
+    if (courseSubview === 'topic') {
+      const index = courseTopicIndex ?? 0
+      if (courseMode && courseMode !== 'choose') {
+        const stepIndex = courseStepIndex ?? 0
+        return `${base}${courseBase}/topic/${index}/${courseMode}/step/${stepIndex}`
       }
-      if (route.mode === 'choose') {
+      if (courseMode === 'choose') {
         return `${base}${courseBase}/topic/${index}/choose`
       }
       return `${base}${courseBase}/topic/${index}`
     }
     return `${base}${courseBase}`
-  }, [activeEvent, route.view, route.subview, route.topicIndex, route.mode, route.stepIndex])
+  }, [
+    activeEvent,
+    route.view,
+    courseSubview,
+    courseTopicIndex,
+    courseMode,
+    courseStepIndex,
+  ])
   const qrStepUrl = useMemo(() => {
     if (!stepUrl) return ''
     const [base, hash = ''] = stepUrl.split('#')
@@ -304,7 +316,7 @@ function App() {
     setIsExamplesOpen(false)
     setOpenPractice({})
     // ratings disabled for now
-  }, [route.view, route.subview, activeEvent?.id])
+  }, [route.view, courseSubview, activeEvent?.id])
 
   useEffect(() => {
     if (!metrikaSiteVisitSent.current) {
@@ -337,12 +349,12 @@ function App() {
   }, [route.view, activeEvent?.id, activeEvent?.uid])
 
   useEffect(() => {
-    if (route.view !== 'course' || route.subview !== 'complete') return
+    if (route.view !== 'course' || courseSubview !== 'complete') return
     if (!activeEvent?.uid) return
     if (metrikaFinishedCourses.current[activeEvent.uid]) return
     metrikaFinishedCourses.current[activeEvent.uid] = true
     reachGoal('course_finish', { courseId: activeEvent.id, uid: activeEvent.uid })
-  }, [route.view, route.subview, activeEvent?.id, activeEvent?.uid])
+  }, [route.view, courseSubview, activeEvent?.id, activeEvent?.uid])
 
   // no auto-redirect: show topic intro first
 
