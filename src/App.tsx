@@ -407,7 +407,7 @@ function App() {
           </div>
         </section>
       ) : null}
-      {isCourseView ? (
+      {isCourseView && activeEvent ? (
         <section className="event-view">
           <nav className="topline event-topline">
             <div className="event-top-left">
