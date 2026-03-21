@@ -749,6 +749,17 @@ function App() {
                     ))}
                   </ul>
                 </div>
+                <div className="course-checklist-qr">
+                  <div className="course-checklist-title">QR‑код курса</div>
+                  <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=${encodeURIComponent(
+                      qrStepUrl || stepUrl,
+                    )}`}
+                    alt="QR-код курса"
+                    loading="lazy"
+                  />
+                  <p>Сканируй, чтобы открыть этот курс на телефоне.</p>
+                </div>
               </div>
               <div className="course-complete-card course-complete-ad-card">
                 <div className="course-complete-ad-main">

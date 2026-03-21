@@ -1749,6 +1749,28 @@
   gap: 8px;
 }
 
+.course-checklist-qr {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.course-checklist-qr img {
+  width: 80px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  background: #fff;
+  object-fit: cover;
+  border: 1px solid rgba(18, 17, 15, 0.12);
+}
+
+.course-checklist-qr p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
 .course-checklist li {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -2066,5 +2088,9 @@
 
   .nav-bottom {
     padding: 12px 14px calc(16px + env(safe-area-inset-bottom));
+  }
+
+  .course-checklist-qr {
+    display: none;
   }
 }
